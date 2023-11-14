@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Categorie } from '../model/categorie.model';
 import { Produit } from '../model/produit.model';
 import { ProduitService } from '../services/produit.service';
-import { Categorie } from '../model/categorie.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-produit',
@@ -13,23 +13,29 @@ export class AddProduitComponent implements OnInit {
   newProduit = new Produit();
   categories! : Categorie[];
   newIdCat! : number;
-  message :String='';
   newCategorie! : Categorie;
+  
   constructor(private produitService: ProduitService,
-              private router :Router ) { }
+              private router : Router) { }
 
-  ngOnInit(): void {
+              ngOnInit(): void {
+                this.produitService.listeCategories().
+                subscribe(cats => {this.categories = cats;
+                console.log(cats);
+                });
+                }
+                
 
-    this.categories = this.produitService.listeCategories();
+                addProduit(){
+                  this.produitService.ajouterProduit(this.newProduit)
+                  .subscribe(prod => {
+                  console.log(prod);
+                  this.router.navigate(['produits']);
+                  });
+                  }
+    
 
-  }
 
-  addProduit() {
-    this.newCategorie =
-    this.produitService.consulterCategorie(this.newIdCat);
-    this.newProduit.categorie = this.newCategorie;
-    this.produitService.ajouterProduit(this.newProduit);
-    this.router.navigate(['produits']);
-    }
+
 
 }
