@@ -1,4 +1,5 @@
 import { Categorie } from "./categorie.model";
+
 export class Produit {
     idProduit! : number;
     nomProduit! : string;

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Categorie } from '../model/categorie.model';
 import { Produit } from '../model/produit.model';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Categorie } from '../model/categorie.model';
+
 
 const httpOptions = {
 headers: new HttpHeaders( {'Content-Type': 'application/json'} )
@@ -13,17 +14,19 @@ headers: new HttpHeaders( {'Content-Type': 'application/json'} )
   providedIn: 'root'
 })
 export class ProduitService {
-  apiURL: string = 'http://localhost:8080/produits/api';
+  apiURL: string = 'http://localhost:8090/produits/api';
+
+
   produits : Produit[]; //un tableau de produits
-  categories : Categorie[];
+  categories ! : Categorie[];
  
 
   constructor(private http : HttpClient) { 
     
-     this.categories = [
+    /* this.categories = [
       {idCat : 1, nomCat : "PC"},
       {idCat : 2, nomCat : "Imprimante"}
-    ];
+    ]; */
     this.produits = [{idProduit : 1, nomProduit : "PC Asus", prixProduit : 3000.600, dateCreation : new Date("01/14/2011"),
                       categorie : {idCat : 1, nomCat : "PC"} },
                      {idProduit : 2, nomProduit : "Imprimante Epson", prixProduit : 450, dateCreation : new Date("12/17/2010"),
@@ -71,13 +74,8 @@ export class ProduitService {
                 return this.http.put<Produit>(this.apiURL, prod, httpOptions);
             }
 
-         
-          listeCategories():Observable<Categorie[]>{
-            return this.http.get<Categorie[]>(this.apiURL+"/cat");
-            }
+            listeCategories():Categorie[] {
+              return this.categories;
+              }
 
-      /*   consulterCategorie(id:number): Categorie{
-            return this.categories.find(cat => cat.idCat == id)!;
-            } */
-        
-}
+          }
